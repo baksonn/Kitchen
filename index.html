@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="pl" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smakosz & Co. – Nowoczesna Strona Kulinarna & Inteligentny Koszyk</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#fef2f0',
+              100: '#fee5e2',
+              500: '#e0533c',
+              600: '#c9402a',
+              700: '#a83220',
+            },
+            warm: {
+              50: '#faf7f2',
+              100: '#f5efe6',
+              200: '#e9dfd0',
+              800: '#2c2523',
+              900: '#1b1716'
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+            serif: ['Playfair Display', 'Georgia', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+  
+  <!-- Własne style -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-warm-50 text-stone-800 antialiased min-h-screen flex flex-col">
+
+  <!-- ========================================================
+       PASEK NAWIGACYJNY (GÓRNE MENU)
+       ======================================================== -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-stone-200/80 shadow-xs transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo -->
+        <a href="#topka" data-nav-target="topka" class="flex items-center gap-3 group">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-rose-600 to-amber-500 flex items-center justify-center text-white shadow-md shadow-rose-200 group-hover:scale-105 transition-transform">
+            <span class="text-2xl">🍳</span>
+          </div>
+          <div>
+            <span class="font-serif font-extrabold text-2xl tracking-tight text-stone-900 group-hover:text-rose-600 transition-colors">Smakosz</span>
+            <span class="text-rose-600 font-sans font-extrabold text-xs uppercase tracking-widest block -mt-1.5">& CO.</span>
+          </div>
+        </a>
+
+        <!-- Główne Menu Desktop -->
+        <nav class="hidden md:flex items-center gap-1 lg:gap-2">
+          <a href="#topka" data-nav-target="topka" class="nav-link active text-sm">
+            ⭐ Top & Polecane
+          </a>
+          <a href="#przepisy" data-nav-target="przepisy" class="nav-link text-sm text-stone-600 hover:text-stone-900">
+            📖 Baza Przepisów
+          </a>
+          <a href="#lodowka" data-nav-target="lodowka" class="nav-link text-sm text-stone-600 hover:text-stone-900">
+            🥕 Co mam w lodówce?
+          </a>
+          <a href="#planer" data-nav-target="planer" class="nav-link text-sm text-stone-600 hover:text-stone-900">
+            📅 Planer Menu
+          </a>
+        </nav>
+
+        <!-- Prawa strona: Szybkie szukanie + Koszyk zakupowy -->
+        <div class="flex items-center gap-3">
+          <!-- Szybka szukajka desktop -->
+          <div class="hidden lg:flex items-center relative w-48 xl:w-56">
+            <input 
+              type="text" 
+              id="header-search-input"
+              placeholder="Szukaj dania..." 
+              class="w-full bg-stone-100 hover:bg-stone-150 focus:bg-white text-xs rounded-full py-2.5 pl-8 pr-3 border border-transparent focus:border-rose-400 outline-none transition-all"
+            />
+            <span class="absolute left-2.5 text-stone-400 text-xs">🔍</span>
+          </div>
+
+          <!-- Przycisk Koszyka / Listy Zakupów (Bohater Aplikacji) -->
+          <a 
+            href="#koszyk" 
+            data-nav-target="koszyk" 
+            class="relative flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm shadow-md shadow-rose-200 transition-all hover:scale-102"
+            title="Przejdź do koszyka i listy zakupów"
+          >
+            <span class="text-lg">🛒</span>
+            <span class="hidden sm:inline">Koszyk Zakupów</span>
+            <span 
+              id="cart-badge-count" 
+              class="bg-amber-400 text-stone-900 text-xs font-black px-2 py-0.5 rounded-full shadow-xs"
+            >
+              0
+            </span>
+          </a>
+
+          <!-- Hamburger menu mobilne -->
+          <button 
+            type="button"
+            onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" 
+            class="md:hidden p-2 rounded-xl text-stone-600 hover:bg-stone-100 focus:outline-none"
+            aria-label="Menu"
+          >
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Mobilne Menu Rozwijane -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-stone-200 px-4 pt-3 pb-5 space-y-2">
+      <a href="#topka" data-nav-target="topka" class="block px-3 py-2.5 rounded-xl font-bold text-stone-800 hover:bg-stone-100">⭐ Top & Polecane</a>
+      <a href="#przepisy" data-nav-target="przepisy" class="block px-3 py-2.5 rounded-xl font-bold text-stone-800 hover:bg-stone-100">📖 Baza Przepisów</a>
+      <a href="#lodowka" data-nav-target="lodowka" class="block px-3 py-2.5 rounded-xl font-bold text-stone-800 hover:bg-stone-100">🥕 Co mam w lodówce?</a>
+      <a href="#planer" data-nav-target="planer" class="block px-3 py-2.5 rounded-xl font-bold text-stone-800 hover:bg-stone-100">📅 Planer Menu</a>
+      <a href="#koszyk" data-nav-target="koszyk" class="block px-3 py-2.5 rounded-xl font-bold bg-rose-50 text-rose-700">🛒 Koszyk i Lista Zakupów</a>
+    </div>
+  </header>
+
+  <!-- ========================================================
+       GŁÓWNY KONTENER TREŚCI (ZMIENNE WIDOKI)
+       ======================================================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- ====================================================
+         WIDOK 1: TOPKA & POLECANE
+         ==================================================== -->
+    <section id="view-topka" class="space-y-12">
+      
+      <!-- Hero Banner z daniem szefa -->
+      <div class="relative rounded-3xl overflow-hidden shadow-xl bg-stone-900 text-white min-h-[380px] sm:min-h-[460px] flex items-end">
+        <img 
+          src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1600&q=80" 
+          alt="Danie Dnia" 
+          class="absolute inset-0 w-full h-full object-cover opacity-60"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+
+        <div class="relative z-10 p-6 sm:p-10 lg:p-12 max-w-2xl">
+          <div class="inline-flex items-center gap-2 bg-amber-500/90 text-stone-900 font-extrabold text-xs uppercase px-3 py-1.5 rounded-full mb-4 shadow-sm">
+            <span>✨</span> Danie Tygodnia & Wybór Szefa
+          </div>
+          <h1 class="text-3xl sm:text-5xl font-black mb-4 leading-tight font-serif">
+            Aromatyczne Ragu alla Bolognese
+          </h1>
+          <p class="text-stone-300 text-sm sm:text-base mb-6 line-clamp-3 leading-relaxed">
+            Długo gotowany, aksamitny sos pomidorowy z mieloną wołowiną, świeżymi ziołami, winem i tartym parmezanem. Prawdziwe arcydzieło kuchni z Bolonii, które przeniesie Cię prosto do słonecznej Italii.
+          </p>
+          <div class="flex flex-wrap items-center gap-3">
+            <button 
+              onclick="openRecipeModal('ragu-bolognese')" 
+              class="px-6 py-3 bg-white hover:bg-stone-100 text-stone-900 font-bold rounded-2xl text-sm transition-all shadow-md"
+            >
+              Zobacz pełny przepis
+            </button>
+            <button 
+              onclick="toggleCartRecipe('ragu-bolognese')" 
+              class="px-6 py-3 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-2xl text-sm transition-all shadow-md shadow-rose-900/50 flex items-center gap-2"
+            >
+              <span>🛒</span> Dodaj składniki do koszyka
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Zalety i funkcja koszyka (Value Proposition) -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs flex items-start gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center text-2xl shrink-0">
+            🛒
+          </div>
+          <div>
+            <h3 class="font-bold text-stone-900 text-base mb-1">Inteligentna Lista Zakupów</h3>
+            <p class="text-xs text-stone-500 leading-relaxed">Wybierz dania, a system połączy składniki i ułoży je według alejek sklepowych.</p>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs flex items-start gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl shrink-0">
+            📱
+          </div>
+          <div>
+            <h3 class="font-bold text-stone-900 text-base mb-1">Tryb Sklepowy na Telefon</h3>
+            <p class="text-xs text-stone-500 leading-relaxed">Będąc w markecie odhaczaj włożone do wózka produkty i nie zapomnij o niczym!</p>
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-xs flex items-start gap-4">
+          <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center text-2xl shrink-0">
+            ⚖️
+          </div>
+          <div>
+            <h3 class="font-bold text-stone-900 text-base mb-1">Kalkulator Porcji</h3>
+            <p class="text-xs text-stone-500 leading-relaxed">Gotujesz dla 2 osób czy dla 8? Gramatury w koszyku przeliczą się natychmiast.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sekcja 1: Najczęściej Wybierane (Topka) -->
+      <div>
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-stone-900 font-serif">
+              🔥 Najczęściej Wybierane Dania
+            </h2>
+            <p class="text-stone-500 text-sm">Bestsellery i najwyżej oceniane przepisy przez naszą społeczność</p>
+          </div>
+          <button 
+            onclick="switchView('przepisy')" 
+            class="text-xs sm:text-sm font-bold text-rose-600 hover:text-rose-700 flex items-center gap-1 group"
+          >
+            Zobacz wszystkie <span class="group-hover:translate-x-1 transition-transform">→</span>
+          </button>
+        </div>
+
+        <div id="top-recipes-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <!-- Wypełniane dynamicznie przez JS -->
+        </div>
+      </div>
+
+      <!-- Sekcja 2: Szybkie Obiady (do 25 minut) -->
+      <div class="pt-6">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-stone-900 font-serif">
+              ⚡ Szybkie Przepisy poniżej 25 minut
+            </h2>
+            <p class="text-stone-500 text-sm">Gdy nie masz czasu na gotowanie, a masz ochotę na coś pysznego</p>
+          </div>
+        </div>
+
+        <div id="quick-recipes-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Wypełniane dynamicznie przez JS -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ====================================================
+         WIDOK 2: KATALOG & BAZA PRZEPISÓW
+         ==================================================== -->
+    <section id="view-przepisy" class="hidden space-y-8">
+      
+      <!-- Nagłówek katalogu -->
+      <div class="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-xs space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-stone-900 font-serif mb-2">
+              Katalog Przepisów Kulinarnych
+            </h1>
+            <p class="text-stone-500 text-sm">Filtruj według gatunku dania, kuchni regionalnej, czasu oraz trudności</p>
+          </div>
+          <div class="text-xs font-bold text-stone-500 bg-stone-100 px-3.5 py-1.5 rounded-full self-start md:self-auto" id="catalog-results-count">
+            16 przepisów
+          </div>
+        </div>
+
+        <!-- Wyszukiwarka główna -->
+        <div class="relative">
+          <input 
+            type="text" 
+            id="recipe-search-input"
+            placeholder="Szukaj po nazwie, składniku (np. awokado, kurczak, makaron)..."
+            class="w-full bg-stone-50 hover:bg-white focus:bg-white text-stone-800 text-sm rounded-2xl py-3.5 pl-12 pr-4 border border-stone-200 focus:border-rose-500 focus:ring-2 focus:ring-rose-200 outline-none transition-all"
+          />
+          <span class="absolute left-4 top-3.5 text-stone-400 text-lg">🔍</span>
+        </div>
+
+        <!-- Pasek kategorii dań (Pills) -->
+        <div id="category-filter-bar" class="flex flex-wrap gap-2 pt-2">
+          <!-- Generowane dynamicznie przez JS -->
+        </div>
+
+        <!-- Dodatkowe filtry (Kuchnia, Czas, Trudność) -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-stone-100">
+          <div>
+            <label class="block text-xs font-bold uppercase text-stone-400 mb-1.5">Kuchnia świata</label>
+            <select id="filter-cuisine" class="w-full bg-stone-50 border border-stone-200 rounded-xl p-2.5 text-xs font-semibold text-stone-700 outline-none focus:border-rose-500">
+              <option value="all">Wszystkie kuchnie świata</option>
+              <option value="wloska">🇮🇹 Włoska</option>
+              <option value="polska">🇵🇱 Polska</option>
+              <option value="azjatycka">🥢 Azjatycka</option>
+              <option value="meksykanska">🇲🇽 Meksykańska</option>
+              <option value="inne">🌍 Świata & Fusion</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-stone-400 mb-1.5">Czas przygotowania</label>
+            <select id="filter-time" class="w-full bg-stone-50 border border-stone-200 rounded-xl p-2.5 text-xs font-semibold text-stone-700 outline-none focus:border-rose-500">
+              <option value="all">Dowolny czas</option>
+              <option value="20">Błyskawiczne (do 20 min)</option>
+              <option value="35">Średnie (do 35 min)</option>
+              <option value="60">Dłuższe (do 60 min)</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase text-stone-400 mb-1.5">Stopień trudności</label>
+            <div class="flex items-center gap-2">
+              <select id="filter-difficulty" class="flex-1 bg-stone-50 border border-stone-200 rounded-xl p-2.5 text-xs font-semibold text-stone-700 outline-none focus:border-rose-500">
+                <option value="all">Wszystkie poziomy</option>
+                <option value="Łatwy">Łatwy</option>
+                <option value="Średni">Średni</option>
+                <option value="Zaawansowany">Zaawansowany</option>
+              </select>
+              <button 
+                id="btn-reset-filters" 
+                class="px-3 py-2.5 text-xs font-semibold bg-stone-100 hover:bg-stone-200 text-stone-600 rounded-xl transition-colors shrink-0"
+                title="Wyczyść filtry"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Siatka przepisów w katalogu -->
+      <div id="all-recipes-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Generowane dynamicznie -->
+      </div>
+
+    </section>
+
+    <!-- ====================================================
+         WIDOK 3: "CO MAM W LODÓWCE?" (GENERATOR RESZTEK)
+         ==================================================== -->
+    <section id="view-lodowka" class="hidden space-y-8">
+      
+      <div class="bg-gradient-to-br from-emerald-800 to-teal-900 rounded-3xl p-6 sm:p-10 text-white shadow-lg">
+        <div class="max-w-2xl">
+          <span class="inline-block bg-white/20 backdrop-blur-md text-emerald-200 text-xs font-bold px-3 py-1 rounded-full mb-3 uppercase tracking-wider">
+            Zero Waste Kitchen
+          </span>
+          <h1 class="text-3xl sm:text-4xl font-extrabold mb-3 font-serif">
+            Co masz dzisiaj w lodówce?
+          </h1>
+          <p class="text-emerald-100 text-sm leading-relaxed mb-6">
+            Zaznacz składniki, które zalegają w Twojej kuchni. Nasz algorytm dopasuje dania, które możesz ugotować od razu lub po dokupieniu zaledwie 1-2 brakujących rzeczy!
+          </p>
+
+          <!-- Wpisywanie własnego składnika -->
+          <div class="flex items-center gap-2 max-w-md">
+            <input 
+              type="text" 
+              id="fridge-custom-input" 
+              placeholder="Wpisz składnik np. brokuł, ser..." 
+              class="flex-1 bg-white/10 border border-white/20 rounded-xl px-4 py-2.5 text-sm text-white placeholder-emerald-200/60 outline-none focus:bg-white/20 transition-all"
+            />
+            <button 
+              id="btn-add-fridge-item" 
+              class="px-4 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-stone-900 font-bold rounded-xl text-sm transition-all"
+            >
+              + Dodaj
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tagi popularnych składników w lodówce -->
+      <div class="bg-white p-6 rounded-3xl border border-stone-200 shadow-xs">
+        <h3 class="text-sm font-bold uppercase tracking-wider text-stone-400 mb-3">Kliknij składniki, które posiadasz:</h3>
+        <div id="fridge-tags-container" class="flex flex-wrap gap-2">
+          <!-- Generowane przez JS -->
+        </div>
+      </div>
+
+      <!-- Wyniki dopasowania -->
+      <div>
+        <h3 class="text-xl font-bold text-stone-900 mb-4 font-serif">
+          Przepisy dopasowane do Twojej lodówki:
+        </h3>
+        <div id="fridge-matched-recipes" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Generowane przez JS -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ====================================================
+         WIDOK 4: PLANER MENU TYGODNIOWEGO
+         ==================================================== -->
+    <section id="view-planer" class="hidden space-y-8">
+      
+      <div class="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-rose-600 mb-1 block">Organizacja posiłków</span>
+          <h1 class="text-3xl font-extrabold text-stone-900 font-serif mb-2">
+            Planer Menu na Cały Tydzień
+          </h1>
+          <p class="text-stone-500 text-sm max-w-xl">
+            Zaplanuj obiady dla rodziny na każdy dzień tygodnia. Jednym kliknięciem wyślij wszystkie składniki z całego tygodnia bezpośrednio do Twojego koszyka zakupowego!
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3 shrink-0">
+          <button 
+            id="btn-clear-planner" 
+            class="px-4 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-xs rounded-xl transition-colors"
+          >
+            Wyczyść tydzień
+          </button>
+          <button 
+            id="btn-add-week-to-cart" 
+            class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm rounded-xl transition-all shadow-md shadow-rose-200 flex items-center gap-2"
+          >
+            <span>🛒</span> Dodaj cały tydzień do koszyka
+          </button>
+        </div>
+      </div>
+
+      <!-- Siatka 7 dni tygodnia -->
+      <div id="weekly-planner-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-4">
+        <!-- Generowane przez JS -->
+      </div>
+
+    </section>
+
+    <!-- ====================================================
+         WIDOK 5: KOSZYK & INTELIGENTNA LISTA ZAKUPÓW (CORE FEATURE)
+         ==================================================== -->
+    <section id="view-koszyk" class="hidden space-y-8">
+      
+      <!-- Pusty stan koszyka -->
+      <div id="cart-empty-state" class="hidden bg-white rounded-3xl p-12 text-center border border-stone-200 shadow-xs max-w-lg mx-auto my-8">
+        <div class="text-6xl mb-4">🛒</div>
+        <h2 class="text-2xl font-bold text-stone-900 mb-2 font-serif">Twój koszyk jest pusty</h2>
+        <p class="text-stone-500 text-sm mb-6 leading-relaxed">
+          Nie dodałeś jeszcze żadnych dań. Przejdź do bazy przepisów lub topki i wybierz to, na co masz dziś ochotę!
+        </p>
+        <button 
+          onclick="switchView('przepisy')" 
+          class="px-6 py-3 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-2xl text-sm transition-all shadow-md"
+        >
+          Przeglądaj bazę przepisów
+        </button>
+      </div>
+
+      <!-- Zawartość koszyka, gdy są w nim dania -->
+      <div id="cart-content-wrapper" class="space-y-8">
+        
+        <!-- Pasek nagłówkowy koszyka i narzędzia sklepowe -->
+        <div class="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-rose-600 text-xs font-bold uppercase tracking-wider">Asystent Zakupowy</span>
+              <span class="text-xs bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">Automatyczne scalanie</span>
+            </div>
+            <h1 class="text-3xl font-extrabold text-stone-900 font-serif mb-2">
+              Twój Koszyk i Lista Zakupów
+            </h1>
+            <p class="text-stone-500 text-sm">
+              Składniki z wybranych dań zostały skonsolidowane i uporządkowane według działów w supermarkecie.
+            </p>
+          </div>
+
+          <!-- Pasek narzędziowy koszyka -->
+          <div class="flex flex-wrap items-center gap-2.5">
+            <!-- Przełącznik trybu sklepowego -->
+            <button 
+              id="btn-toggle-shop-mode" 
+              class="px-4 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold text-xs rounded-xl transition-all flex items-center gap-1.5"
+              title="Większe czcionki i wygoda obsługi jedną ręką w sklepie"
+            >
+              🛒 Włącz Tryb Sklepowy
+            </button>
+
+            <!-- Przełącznik ukrywania kupionych -->
+            <button 
+              id="btn-toggle-hide-bought" 
+              class="px-4 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-xs rounded-xl transition-all"
+            >
+              👁️ Ukryj kupione
+            </button>
+
+            <!-- Kopiuj na telefon / WhatsApp -->
+            <button 
+              id="btn-copy-grocery-list" 
+              class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center gap-1.5"
+              title="Kopiuj estetyczną listę zakupów do wysłania komuś SMS-em"
+            >
+              📋 Kopiuj na SMS/WhatsApp
+            </button>
+
+            <!-- Drukuj listę -->
+            <button 
+              id="btn-print-grocery-list" 
+              class="px-3 py-2.5 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold text-xs rounded-xl transition-all"
+              title="Drukuj"
+            >
+              🖨️
+            </button>
+
+            <!-- Opróżnij koszyk -->
+            <button 
+              id="btn-empty-cart" 
+              class="px-3 py-2.5 text-stone-400 hover:text-rose-600 hover:bg-rose-50 text-xs font-bold rounded-xl transition-colors"
+              title="Wyczyść koszyk"
+            >
+              Wyczyść
+            </button>
+          </div>
+        </div>
+
+        <!-- Pasek postępu zakupów w markecie -->
+        <div class="bg-white p-5 rounded-2xl border border-stone-200 shadow-xs">
+          <div class="flex items-center justify-between text-xs font-bold text-stone-700 mb-2">
+            <span id="shopping-progress-text">Postęp zakupów: 0 / 0 produktów w wózku</span>
+            <button id="btn-clear-bought" class="text-stone-400 hover:text-stone-700 text-xs underline">
+              Odznacz wszystkie
+            </button>
+          </div>
+          <div class="w-full bg-stone-100 h-3 rounded-full overflow-hidden">
+            <div id="shopping-progress-fill" class="bg-emerald-500 h-full rounded-full progress-bar-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <!-- Układ dwukolumnowy: Lewa (Wybrane dania) / Prawa (Skonsolidowane składniki) -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          <!-- Lewa kolumna: Wybrane dania z kalkulatorem porcji (4 kolumny) -->
+          <div class="lg:col-span-4 space-y-4">
+            <div class="bg-white p-5 rounded-3xl border border-stone-200 shadow-xs">
+              <h3 class="font-extrabold text-stone-900 text-base mb-1 font-serif">
+                Dania w Twoim menu
+              </h3>
+              <p class="text-xs text-stone-500 mb-4">
+                Zmieniaj porcje – gramatury składników po prawej przeliczają się na żywo!
+              </p>
+
+              <div id="cart-selected-recipes" class="space-y-3">
+                <!-- Generowane przez JS -->
+              </div>
+
+              <!-- Dodaj kolejne danie -->
+              <button 
+                onclick="switchView('przepisy')" 
+                class="w-full mt-4 py-2.5 border-2 border-dashed border-stone-200 hover:border-rose-400 text-stone-600 hover:text-rose-600 text-xs font-bold rounded-xl transition-colors text-center"
+              >
+                + Dodaj kolejne danie do menu
+              </button>
+            </div>
+
+            <!-- Dodaj własny produkt (np. papier, woda, folia) -->
+            <div class="bg-white p-5 rounded-3xl border border-stone-200 shadow-xs space-y-3">
+              <h4 class="font-bold text-stone-900 text-sm flex items-center gap-1.5">
+                <span>➕</span> Dodaj własny produkt do listy
+              </h4>
+              <p class="text-xs text-stone-500">Np. papier do pieczenia, woda, coś spoza przepisów</p>
+
+              <div class="space-y-2">
+                <input 
+                  type="text" 
+                  id="custom-grocery-name" 
+                  placeholder="Nazwa produktu (np. Woda gazowana)" 
+                  class="w-full bg-stone-50 border border-stone-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-rose-500"
+                />
+                
+                <div class="flex gap-2">
+                  <select id="custom-grocery-cat" class="flex-1 bg-stone-50 border border-stone-200 rounded-xl px-2 py-2 text-xs outline-none focus:border-rose-500">
+                    <option value="Warzywa i owoce">🥦 Warzywa i owoce</option>
+                    <option value="Mięso i ryby">🥩 Mięso i ryby</option>
+                    <option value="Nabiał i jaja">🧀 Nabiał i jaja</option>
+                    <option value="Pieczywo i zboża">🌾 Pieczywo i zboża</option>
+                    <option value="Spiżarnia i przyprawy">🧂 Spiżarnia</option>
+                    <option value="Inne" selected>📦 Inne artykuły</option>
+                  </select>
+
+                  <input 
+                    type="text" 
+                    id="custom-grocery-amount" 
+                    placeholder="Ilość (np. 1 zgrzewka)" 
+                    class="w-28 bg-stone-50 border border-stone-200 rounded-xl px-2 py-2 text-xs outline-none focus:border-rose-500"
+                  />
+                </div>
+
+                <button 
+                  id="btn-add-custom-grocery" 
+                  class="w-full py-2 bg-stone-800 hover:bg-black text-white text-xs font-bold rounded-xl transition-colors"
+                >
+                  Dodaj do listy zakupów
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Prawa kolumna: Skonsolidowana lista według działów supermarketu (8 kolumn) -->
+          <div class="lg:col-span-8 space-y-6">
+            <div id="grocery-departments-container" class="space-y-6">
+              <!-- Generowane dynamicznie przez JS: Karty poszczególnych działów (Warzywa, Mięso, Nabiał itp.) -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ========================================================
+       MODAL SZCZEGÓŁÓW PRZEPISU (POPUP)
+       ======================================================== -->
+  <div 
+    id="recipe-modal-container" 
+    class="hidden fixed inset-0 z-50 overflow-y-auto modal-backdrop flex items-center justify-center p-4 sm:p-6"
+  >
+    <div 
+      id="recipe-modal-card" 
+      class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative fade-in border border-stone-200"
+      onclick="event.stopPropagation()"
+    >
+      <div id="recipe-modal-content">
+        <!-- Renderowane przez JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================
+       TOAST NOTIFICATION (POWIADOMIENIE PŁYWAJĄCE)
+       ======================================================== -->
+  <div 
+    id="toast-notification" 
+    class="hidden fixed bottom-6 right-6 z-50 bg-stone-900/95 text-white px-5 py-3.5 rounded-2xl shadow-xl text-sm font-semibold transition-all duration-300 backdrop-blur-md border border-stone-700/80 flex items-center gap-2 opacity-0"
+  >
+    Powiadomienie
+  </div>
+
+  <!-- ========================================================
+       STOPKA STRONY (FOOTER)
+       ======================================================== -->
+  <footer class="bg-white border-t border-stone-200 mt-16 py-12 text-stone-600">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div>
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-2xl">🍳</span>
+            <span class="font-serif font-extrabold text-xl text-stone-900">Smakosz & Co.</span>
+          </div>
+          <p class="text-xs text-stone-400 leading-relaxed">
+            Nowoczesny asystent kulinarny. Planuj menu, skaluj porcje i rób zakupy w supermarkecie z interaktywną listą składników.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-stone-900 text-sm mb-3">Nawigacja</h4>
+          <ul class="space-y-2 text-xs">
+            <li><a href="#topka" data-nav-target="topka" class="hover:text-rose-600 transition-colors">Top & Polecane dania</a></li>
+            <li><a href="#przepisy" data-nav-target="przepisy" class="hover:text-rose-600 transition-colors">Baza i katalog przepisów</a></li>
+            <li><a href="#lodowka" data-nav-target="lodowka" class="hover:text-rose-600 transition-colors">Co mam w lodówce?</a></li>
+            <li><a href="#planer" data-nav-target="planer" class="hover:text-rose-600 transition-colors">Tygodniowy planer menu</a></li>
+            <li><a href="#koszyk" data-nav-target="koszyk" class="hover:text-rose-600 transition-colors">Koszyk i lista zakupów</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-stone-900 text-sm mb-3">Popularne Kuchnie</h4>
+          <ul class="space-y-2 text-xs">
+            <li><a href="#przepisy" onclick="state.filters.cuisine='wloska'; renderCatalogView(); switchView('przepisy');" class="hover:text-rose-600 transition-colors">Kuchnia Włoska</a></li>
+            <li><a href="#przepisy" onclick="state.filters.cuisine='azjatycka'; renderCatalogView(); switchView('przepisy');" class="hover:text-rose-600 transition-colors">Kuchnia Azjatycka</a></li>
+            <li><a href="#przepisy" onclick="state.filters.cuisine='polska'; renderCatalogView(); switchView('przepisy');" class="hover:text-rose-600 transition-colors">Kuchnia Polska</a></li>
+            <li><a href="#przepisy" onclick="state.filters.cuisine='meksykanska'; renderCatalogView(); switchView('przepisy');" class="hover:text-rose-600 transition-colors">Kuchnia Meksykańska</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-stone-900 text-sm mb-3">Tryb Sklepowy</h4>
+          <p class="text-xs text-stone-400 mb-3">
+            Otwórz tę stronę na smartfonie przed wejściem do Biedronki lub Lidla i odhaczaj produkty w locie!
+          </p>
+          <div class="text-xs font-semibold text-emerald-600 flex items-center gap-1.5">
+            <span>✓</span> Działa w 100% offline z pamięcią podręczną
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-8 border-t border-stone-100 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-400 gap-4">
+        <div>
+          © 2026 Smakosz & Co. Wszelkie prawa zastrzeżone. Smacznego gotowania!
+        </div>
+        <div class="flex gap-4">
+          <span class="hover:text-stone-600 cursor-pointer">Polityka prywatności</span>
+          <span class="hover:text-stone-600 cursor-pointer">Wskazówki kulinarne</span>
+          <span class="hover:text-stone-600 cursor-pointer">Kontakt</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Kliknięcie w tło modala zamyka go -->
+  <script>
+    document.getElementById('recipe-modal-container').addEventListener('click', (e) => {
+      if (e.target.id === 'recipe-modal-container') {
+        closeRecipeModal();
+      }
+    });
+  </script>
+
+  <!-- Skrypty aplikacji -->
+  <script src="js/recipes-data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
