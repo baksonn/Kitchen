@@ -1,0 +1,13 @@
+{
+  "name": "kuchnia-smakosz",
+  "version": "1.0.0",
+  "description": "Nowoczesna strona kulinarna z inteligentnym koszykiem i listą zakupów do sklepu",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve ."
+  },
+  "keywords": ["przepisy", "kuchnia", "koszyk-zakupowy", "grocery-list"],
+  "author": "Smakosz & Co.",
+  "license": "MIT"
+}
